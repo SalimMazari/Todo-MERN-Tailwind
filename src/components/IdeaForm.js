@@ -1,4 +1,4 @@
-//Axios permet d’envoyer des requêtes HTTP au serveur dorsal Express.js pour stocker des données dans la BDD MongoDB
+//Axios est un client HTTP qui permet d’envoyer des requêtes HTTP au serveur dorsal Express.js pour stocker des données dans la BDD MongoDB
 import Axios from 'axios';
 import { useState } from "react";
 
@@ -40,6 +40,9 @@ export default function IdeaForm({handleAdd}){
                 setName(response.data.name);
                 setBrand(response.data.brand);
                 setLink(response.data.lien);
+            })
+            .catch((error) => {
+                console.log(error);
             });
 
         //Vider les inputs
