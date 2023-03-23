@@ -43,7 +43,7 @@ const App = () => {
     const fetchIdeas = async () => {
         const idea = await axios.get("http://localhost:5000/ideas");
         setIdeas(idea.data);
-        console.log(idea.data);
+        // console.log(idea.data);
     } 
     useEffect(() => {
         fetchIdeas();

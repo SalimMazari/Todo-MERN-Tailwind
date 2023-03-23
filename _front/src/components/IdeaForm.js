@@ -1,65 +1,56 @@
-//Axios est un client HTTP qui permet d’envoyer des requêtes HTTP au serveur dorsal Express.js pour stocker des données dans la BDD MongoDB
-import Axios from 'axios';
 import { useState } from "react";
+//Axios est un client HTTP qui permet d’envoyer des requêtes HTTP au serveur dorsal Express.js pour stocker des données dans la BDD MongoDB
+import axios from 'axios';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
-//const baseURL = "https://jsonplaceholder.typicode.com/posts";
+//On définit un "schéma" pour utiliser la librairie yup afin de récupérer les données du formulaire
+const schema = yup.object().shape({
+    name: yup.string(),
+    brand: yup.string(),
+    lien: yup.string(),
+});
 
-export default function IdeaForm({handleAdd}){
-    //STATE 
-    const [name, setName] = useState("");
-    const [brand, setBrand] = useState("");
-    const [lien, setLink] = useState("");
-  
-    /*const idea = {
-      name,
-      brand,
-      lien,
-    };
-    console.log(idea);*/
-
-    //COMPORTEMENTS
+const IdeaForm = () => {
     
-    const handleSubmit = (event) => {
-        event.preventDefault(); //empêche le rechargement de la page
-        const id = new Date().getTime();
-        const ideaToAdd = {
-            id: id,
-            name: name,
-            brand: brand,
-            lien: lien
-        }
-        handleAdd(ideaToAdd)
+    // UseForm utilise le résolveur Yup pour le traitement du formulaire:
+    //    - register => enregistre un élément et applique les règles de validation
+    //    - handleSubmit => fonction qui reçoit les info du formulaire
+    //    - reset => clear le formulaire
+    //    - formState: {errors} => renvoie les erreurs de remplissage
+    const { register, handleSubmit, formState: { errors }, reset } = useForm ({
+        resolver: yupResolver(schema),
+    });
 
-        Axios
-            .post('http://localhost:5000/ideas', {
-                name: name,
-                brand: brand,
-                lien: lien
-            })
-            .then((response) => {
-                setName(response.data.name);
-                setBrand(response.data.brand);
-                setLink(response.data.lien);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+    const [confirm, setConfirm] = useState(false);
+    const displayConfirm = () => {
+        setConfirm('true');
+    };
 
-        //Vider les inputs
-        setName("") 
-        setBrand("")
-        setLink("")
-    }
+    //Recevoir les infos du formulaire
+    const onSubmitHandler = (data) => {
+        console.log({ data });
+        reset(); //efface le formulaire
 
-    const handleNameChange = (event) => {
-        setName(event.target.value)
-    }
-    const handleBrandChange = (event) => {
-        setBrand(event.target.value)
-    }
-    const handleLinkChange = (event) => {
-        setLink(event.target.value)
-    }
+        // Requête post à l'API avec axios
+        //axios.post("http://localhost:5000/ideas", {
+        axios.post("https://idees-cadeaux.vercel.app/ideas", {
+            name : data.name,
+            brand : data.brand,
+            lien : data.lien,
+        })
+        .then((res) => {
+            console.log(res.data)
+            if(res.data === 'Idea created !') { 
+                // afficher la div de confirmation
+                displayConfirm();
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+        });
+    };
 
     //AFFICHAGE (render)
     return(
@@ -67,43 +58,59 @@ export default function IdeaForm({handleAdd}){
 
             <h3 className="text-xl font-bold tracking-wide mb-2 text-center">Ajouter une idée</h3>
 
-            <form className="flex flex-col" action="submit" onSubmit={handleSubmit}>
+            <form
+                className="flex flex-col"
+                onSubmit={ handleSubmit(onSubmitHandler) }
+                style={{ display: confirm ? 'none' : 'flex' }}
+            >
+
                 <div className="flex justify-center flex-wrap" >
+
                     <input
                         id="name"
                         className="shadow rounded-full p-1 m-3"
-                        value={name}
                         type="text"
                         placeholder=" Le nom"
-                        onChange={handleNameChange}
+                        {...register('name')}
                         >
                     </input>
+                    <p>{errors.name?.message}</p>
+
                     <input
                         id="brand"
                         className="shadow rounded-full p-1 m-3"
-                        value={brand}
                         type="text"
                         placeholder=" La marque"
-                        onChange={handleBrandChange}
+                        {...register('brand')}
                         >
                     </input>
+                    <p>{errors.brand?.message}</p>
+
                     <input
-                        id="link"
+                        id="lien"
                         className="shadow rounded-full p-1 m-3"
-                        value={lien}
                         type="text"
                         placeholder=" Le lien"
-                        onChange={handleLinkChange}
+                        {...register('lien')}
                         >
                     </input>
+                    <p>{errors.lien?.message}</p>
+
                 </div>
 
                 <div className="flex justify-center" >
-                    <button className="bg-violet-600 hover:bg-violet-900 text-white w-1/6 mt-2 p-1 px-3 rounded-full">Ajouter</button>
+                    <button type="submit" className="bg-violet-600 hover:bg-violet-900 text-white w-1/6 mt-2 p-1 px-3 rounded-full">Ajouter</button>
                 </div>
 
             </form>
 
+            {/* Message de confirmation de création du produit */}
+            <div className="flex flex-col m-5" style={{ display: confirm ? 'flex' : 'none' }}>
+                <div className="text-xl text-green-700 m-5">Votre idée a bien été ajouté à la base de données !</div>
+            </div>
+
         </div>
     )
 }
+
+export default IdeaForm;
