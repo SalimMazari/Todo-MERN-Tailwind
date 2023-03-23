@@ -10,7 +10,7 @@ const mongoose = require("mongoose");
 mongoose
   .set("strictQuery", false)
   .connect(
-    "mongodb://127.0.0.1:27017/gifts-ideas"
+    "mongodb+srv://mlepineutter:bbZkbqchFqBNn2tp@gifts.igy4rhz.mongodb.net/test"
   )
   .then(() => {
     //si connecté
