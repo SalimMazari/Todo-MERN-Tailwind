@@ -15,6 +15,7 @@ router.post("/ideas", async(request, response) => {
             name: request.body.name,
             brand: request.body.brand,
             lien: request.body.lien,
+            status: request.body.status,
         });
         //On sauvegarde la nouvelle idée dans la BDD
         await newIdea.save();
@@ -25,6 +26,7 @@ router.post("/ideas", async(request, response) => {
             name: newIdea.name,
             brand: newIdea.brand,
             lien: newIdea.lien,
+            status: newIdea.status,
           });
         response.send("Idea created !");
         response.end();
@@ -67,6 +69,7 @@ router.patch("/ideas/:id", async(request, response) => {
           name: request.body.name,
           brand: request.body.brand,
           lien: request.body.lien,
+          status: request.body.status,
         }
         //on cherche l'idée à partir de son id dans la BDD:
         const ideaToUpdate = await Idea.findOne({ _id : request.params.id });
@@ -75,6 +78,7 @@ router.patch("/ideas/:id", async(request, response) => {
         ideaToUpdate.name = updateRequest.name ?? ideaToUpdate.name;
         ideaToUpdate.brand = updateRequest.brand ?? ideaToUpdate.brand;
         ideaToUpdate.lien = updateRequest.lien ?? ideaToUpdate.lien;
+        ideaToUpdate.status = updateRequest.status ?? ideaToUpdate.status;
         //on remplace l'objet intiial dans la BDD par le nouvel objet modifié productToUpdate:
         await Idea.updateOne({_id  : request.params.id }, {$set: ideaToUpdate});
         response.status(201);

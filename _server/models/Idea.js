@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 
 const Idea  = mongoose.model("Ideas", {
-    name: { type: String },
-    brand: { type: String},
-    lien: { type: String}
+    name: { String },
+    brand: { String },
+    lien: { String },
+    status: { Boolean }
 })
 
 module.exports = Idea; 
