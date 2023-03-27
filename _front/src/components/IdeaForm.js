@@ -1,9 +1,10 @@
 import { useState } from "react";
-//Axios est un client HTTP qui permet d’envoyer des requêtes HTTP au serveur dorsal Express.js pour stocker des données dans la BDD MongoDB
-import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+
+//Axios permet d’envoyer des requêtes HTTP au serveur dorsal Express.js pour stocker des données dans la BDD MongoDB
+import axios from 'axios';
 
 //On définit un "schéma" pour utiliser la librairie yup afin de récupérer les données du formulaire
 const schema = yup.object().shape({
@@ -16,9 +17,9 @@ const IdeaForm = () => {
     
     // UseForm utilise le résolveur Yup pour le traitement du formulaire:
     //    - register => enregistre un élément et applique les règles de validation
-    //    - handleSubmit => fonction qui reçoit les info du formulaire
-    //    - reset => clear le formulaire
+    //    - handleSubmit => fonction qui reçoit les infos du formulaire
     //    - formState: {errors} => renvoie les erreurs de remplissage
+    //    - reset => clear le formulaire
     const { register, handleSubmit, formState: { errors }, reset } = useForm ({
         resolver: yupResolver(schema),
     });
@@ -34,15 +35,14 @@ const IdeaForm = () => {
         reset(); //efface le formulaire
 
         // Requête post à l'API avec axios
-        //axios.post("http://localhost:5000/ideas", {
         axios.post("https://idees-cadeaux.vercel.app/ideas", {
             name : data.name,
             brand : data.brand,
             lien : data.lien,
         })
-        .then((res) => {
-            console.log(res.data)
-            if(res.data === 'Idea created !') { 
+        .then((response) => {
+            console.log(response.data)
+            if(response.data === 'Idea created !') { 
                 // afficher la div de confirmation
                 displayConfirm();
             }
@@ -104,7 +104,7 @@ const IdeaForm = () => {
 
             </form>
 
-            {/* Message de confirmation de création du produit */}
+            {/* Message de confirmation d'ajout de l'idée à la BDD */}
             <div className="flex flex-col m-5" style={{ display: confirm ? 'flex' : 'none' }}>
                 <div className="text-xl text-green-700 m-5">Votre idée a bien été ajouté à la base de données !</div>
             </div>
