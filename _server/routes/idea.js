@@ -33,7 +33,7 @@ router.post("/ideas", async(request, response) => {
     } catch (error) {
         //si ça ne fonctionne pas, afficher l'erreur:
         response.status(400);
-        response.json("Could not add idea : ", error.response.data);
+        response.json("Could not add idea : ", error.response);
         response.end();
     }
 });
@@ -56,7 +56,7 @@ router.delete("/ideas/:id", async(request, response) => {
         }
       } catch (error) {
         response.status(400);
-        response.json("Could not delete idea : ", error.response.data);
+        response.json("Could not delete idea : ", error.response);
         response.end();
       }
 });
@@ -87,7 +87,7 @@ router.patch("/ideas/:id", async(request, response) => {
         response.end();
       } catch (error) {
         response.status(400);
-        response.json("Could not patch idea : ", error.response.data);
+        response.json("Could not patch idea : ", error.response);
         response.end();
       }
 });
@@ -101,7 +101,7 @@ router.get("/ideas", async(request, response) => {
         response.end();
       } catch (error) {
         response.status(400);
-        response.json("Failed to load the ideas : ", error.response.data);
+        response.json("Failed to load the ideas : ", error.response);
         response.end();
       }
 });
@@ -115,7 +115,7 @@ router.get("/ideas/:id", async(request, response) => {
         response.end();
       } catch (error) {
         response.status(400);
-        response.json("Failed to load the idea : ", error.response.data);
+        response.json("Failed to load the idea : ", error.response);
         response.end();
       }
 });
