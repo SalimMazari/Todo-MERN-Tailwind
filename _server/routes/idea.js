@@ -15,7 +15,7 @@ router.post("/ideas", async(request, response) => {
             name: request.body.name,
             brand: request.body.brand,
             lien: request.body.lien,
-            status: request.body.status,
+            // status: request.body.status,
         });
         //On sauvegarde la nouvelle idée dans la BDD
         await newIdea.save();

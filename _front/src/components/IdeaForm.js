@@ -11,6 +11,7 @@ const schema = yup.object().shape({
     name: yup.string(),
     brand: yup.string(),
     lien: yup.string(),
+    // status: yup.boolean()
 });
 
 const IdeaForm = () => {
@@ -35,20 +36,37 @@ const IdeaForm = () => {
         reset(); //efface le formulaire
 
         // Requête post à l'API avec axios
+        const headers = { headers: {'Content-Type': 'application/json'} }
         axios.post("https://idees-cadeaux.vercel.app/ideas", {
             name : data.name,
             brand : data.brand,
             lien : data.lien,
-        })
+            // status : data.status
+        }, headers)
         .then((response) => {
-            console.log(response.data)
-            if(response.data === 'Idea created !') { 
+            console.log(response.data);
+            if(response.data === "Idea created !") { 
                 // afficher la div de confirmation
                 displayConfirm();
             }
         })
         .catch((error) => {
-            console.log(error)
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log(error.request);
+            } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+            }
+            console.log(error.config);
         });
     };
 
@@ -61,40 +79,51 @@ const IdeaForm = () => {
             <form
                 className="flex flex-col"
                 onSubmit={ handleSubmit(onSubmitHandler) }
-                style={{ display: confirm ? 'none' : 'flex' }}
+                // style={{ display: confirm ? 'none' : 'flex' }}
             >
 
                 <div className="flex justify-center flex-wrap" >
 
                     <input
-                        id="name"
-                        className="shadow rounded-full p-1 m-3"
+                        // id="name"
                         type="text"
+                        className="shadow rounded-full p-1 m-3"
                         placeholder=" Le nom"
+                        name="name"
                         {...register('name')}
                         >
                     </input>
                     <p>{errors.name?.message}</p>
 
                     <input
-                        id="brand"
-                        className="shadow rounded-full p-1 m-3"
+                        // id="brand"
                         type="text"
+                        className="shadow rounded-full p-1 m-3"
                         placeholder=" La marque"
+                        name="brand"
                         {...register('brand')}
                         >
                     </input>
                     <p>{errors.brand?.message}</p>
 
                     <input
-                        id="lien"
-                        className="shadow rounded-full p-1 m-3"
+                        // id="lien"
                         type="text"
+                        className="shadow rounded-full p-1 m-3"
                         placeholder=" Le lien"
+                        name="lien"
                         {...register('lien')}
                         >
                     </input>
                     <p>{errors.lien?.message}</p>
+
+                    {/* <input
+                        type="hidden"
+                        value="false"
+                        name="status"
+                        {...register('status')}
+                        >
+                    </input> */}
 
                 </div>
 
@@ -105,8 +134,8 @@ const IdeaForm = () => {
             </form>
 
             {/* Message de confirmation d'ajout de l'idée à la BDD */}
-            <div className="flex flex-col m-5" style={{ display: confirm ? 'flex' : 'none' }}>
-                <div className="text-xl text-green-700 m-5">Votre idée a bien été ajouté à la base de données !</div>
+            <div className="flex flex-col mt-5" style={{ display: confirm ? 'flex' : 'none' }}>
+                <div className="text-sm text-violet-900 text-center">Ton idée a bien été ajoutée à la base de données !</div>
             </div>
 
         </div>
