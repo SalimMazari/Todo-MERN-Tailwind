@@ -20,15 +20,15 @@ router.post("/ideas", async(request, response) => {
         //On sauvegarde la nouvelle idée dans la BDD
         await newIdea.save();
         response.status(201);
-        response.json({
-            //ce que le serveur renvoie
-            _id: newIdea._id,
-            name: newIdea.name,
-            brand: newIdea.brand,
-            lien: newIdea.lien,
-            status: newIdea.status,
-          });
-        response.send("Idea created !");
+        // response.json({
+        //     //ce que le serveur renvoie
+        //     _id: newIdea._id,
+        //     name: newIdea.name,
+        //     brand: newIdea.brand,
+        //     lien: newIdea.lien,
+        //     status: newIdea.status,
+        // });
+        response.json("Idea created !");
         response.end();
     } catch (error) {
         //si ça ne fonctionne pas, afficher l'erreur:
