@@ -10,6 +10,7 @@ const Idea = require("../models/Idea.js");
 //Route de type POST pour ENVOYER les données de la nouvelle idée dans la BDD
 router.post("/ideas", async(request, response) => {
     try {
+        console.log("req.body: ", req.body);
         //option destructuring: const { name, brand, lien, status } = req.body;
         const newIdea = new Idea({
             name: request.body.name,
@@ -20,9 +21,9 @@ router.post("/ideas", async(request, response) => {
         //On sauvegarde la nouvelle idée dans la BDD
         await newIdea.save();
         response.status(201);
-        response.json("Idea created !");
+        response.json("Idea created: ", newIdea);
+        // ce que le serveur renvoie :
         // response.json({
-        //     //ce que le serveur renvoie
         //     _id: newIdea._id,
         //     name: newIdea.name,
         //     brand: newIdea.brand,
@@ -79,7 +80,7 @@ router.patch("/ideas/:id", async(request, response) => {
         ideaToUpdate.brand = updateRequest.brand ?? ideaToUpdate.brand;
         ideaToUpdate.lien = updateRequest.lien ?? ideaToUpdate.lien;
         ideaToUpdate.status = updateRequest.status ?? ideaToUpdate.status;
-        //on remplace l'objet intiial dans la BDD par le nouvel objet modifié productToUpdate:
+        //on remplace l'objet intiial dans la BDD par le nouvel objet modifié ideaToUpdate:
         await Idea.updateOne({_id  : request.params.id }, {$set: ideaToUpdate});
         response.status(201);
         response.json("Idea updated !");
