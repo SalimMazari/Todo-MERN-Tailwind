@@ -4,7 +4,7 @@ const Idea  = mongoose.model("Ideas", {
     name: { String },
     brand: { String },
     lien: { String },
-    // status: { Boolean }
+    status: { Boolean },
 })
 
 module.exports = Idea; 

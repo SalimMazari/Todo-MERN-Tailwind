@@ -10,13 +10,17 @@ const Idea = require("../models/Idea.js");
 //Route de type POST pour ENVOYER les données de la nouvelle idée dans la BDD
 router.post("/ideas", async(request, response) => {
     try {
-        //console.log("req.body: ", req.body);
-        //option destructuring: const { name, brand, lien, status } = req.body;
+        //destructuring:
+        const { name, brand, lien, status } = req.body;
         const newIdea = new Idea({
-            name: request.body.name,
-            brand: request.body.brand,
-            lien: request.body.lien,
-            // status: request.body.status,
+          name: name,
+          brand: brand,
+          lien: lien,
+          status: status,
+        //     name: request.body.name,
+        //     brand: request.body.brand,
+        //     lien: request.body.lien,
+        //     status: request.body.status,
         });
         //On sauvegarde la nouvelle idée dans la BDD
         await newIdea.save();
