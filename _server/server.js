@@ -39,6 +39,19 @@ app.use(cors());
 //Middleware = plugin ajouté au serveur pour récupérer des paramètres de type Body
 app.use(express.json());
 
+app.use((req, res, next) => {
+  const err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+app.use((err, req, res, next) => {
+  res.locals.error = err;
+  const status = err.status || 500;
+  res.status(status);
+  res.render('error');
+});
+
 //Appeler les routes
 const routes = require("./routes/idea.js");
 app.use(routes);
