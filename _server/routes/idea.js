@@ -35,7 +35,7 @@ router.post("/ideas", async(request, response) => {
         // });
     } catch (error) {
         //si ça ne fonctionne pas, afficher l'erreur:
-        response.status(400).json("Could not add idea : ", error.response);
+        response.status(400).json("Could not add idea : ", error);
     }
 });
 

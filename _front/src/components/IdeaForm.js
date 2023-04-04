@@ -11,7 +11,7 @@ const schema = yup.object().shape({
     name: yup.string(),
     brand: yup.string(),
     lien: yup.string(),
-    // status: yup.boolean()
+    status: yup.boolean()
 });
 
 const IdeaForm = () => {
@@ -37,11 +37,12 @@ const IdeaForm = () => {
 
         // Requête post à l'API avec axios
         const headers = { headers: {'Content-Type': 'application/json'} }
+        //const headers = { headers: {'Content-Type': 'application/x-www-form-urlencoded'} }
         axios.post("https://idees-cadeaux.vercel.app/ideas", {
             name : data.name,
             brand : data.brand,
             lien : data.lien,
-            // status : data.status
+            status : data.status
         }, headers)
         .then((response) => {
             console.log(response.data);
@@ -117,13 +118,13 @@ const IdeaForm = () => {
                     </input>
                     <p>{errors.lien?.message}</p>
 
-                    {/* <input
+                    <input
                         type="hidden"
                         value="false"
                         name="status"
                         {...register('status')}
                         >
-                    </input> */}
+                    </input>
 
                 </div>
 
