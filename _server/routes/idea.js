@@ -48,7 +48,7 @@ router.post("/ideas", async(request, response) => {
         response.status(201).json("Idea created !");
     } catch (error) {
         //si ça ne fonctionne pas, afficher l'erreur :
-        response.status(400).json("Could not create idea : ", error);
+        response.status(400).json(error);
     }
 });
 
