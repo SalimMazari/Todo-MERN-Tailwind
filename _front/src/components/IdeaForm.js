@@ -11,7 +11,7 @@ const schema = yup.object().shape({
     name: yup.string(),
     brand: yup.string(),
     lien: yup.string(),
-    status: yup.boolean()
+    status: yup.boolean(),
 });
 
 const IdeaForm = () => {
@@ -30,22 +30,23 @@ const IdeaForm = () => {
         setConfirm('true');
     };
 
-    //Recevoir les infos du formulaire
+    // Recevoir les infos du formulaire
     const onSubmitHandler = (data) => {
         console.log({ data });
         reset(); //efface le formulaire
 
         // Requête post à l'API avec axios
-        const headers = { headers: {'Content-Type': 'application/json'} }
-        //const headers = { headers: {'Content-Type': 'application/x-www-form-urlencoded'} }
-        axios.post("https://idees-cadeaux.vercel.app/ideas", {
+        const url = "https://idees-cadeaux.vercel.app/ideas";
+        const params = {
             name : data.name,
             brand : data.brand,
             lien : data.lien,
-            status : data.status
-        }, headers)
+            status : data.status,
+        };
+        const headers = { headers: {'Content-Type': 'application/json'} };
+        axios
+        .post(url, params, headers)
         .then((response) => {
-            console.log(response)
             console.log(response.data);
             if(response.data === "Idea created !") { 
                 // afficher la div de confirmation
@@ -63,12 +64,12 @@ const IdeaForm = () => {
                 // The request was made but no response was received
                 // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                 // http.ClientRequest in node.js
-                console.log(error.request);
+                console.log('Error request : ', error.request);
             } else {
                 // Something happened in setting up the request that triggered an Error
-                console.log('Error : ', error.message);
+                console.log('Error message : ', error.message);
             }
-            console.log(error.config);
+            console.log('Error config : ', error.config);
         });
     };
 

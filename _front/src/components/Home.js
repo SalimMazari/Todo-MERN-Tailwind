@@ -35,13 +35,14 @@ const Home = () => {
             //prend en paramètre la nouvelle valeur du state
     }
 
+    /*
     //Supprimer une idée de la BDD
     const deleteIdea = (id) => {
         axios.delete(`https://idees-cadeaux.vercel.app/ideas/${id}`)
         setIdeas(ideas.filter(idea => idea.id !== id));
-    };
+    };*/
 
-    /*Ajouter une idée dans la BDD [OLD]
+    /*Ajouter une idée [OLD]
     const handleAdd = (ideaToAdd) => {
         //1. Copier le state
         const ideasCopy = [...ideas]; //tableau éclaté (...) et rangé dans un nouveau tableau
@@ -84,8 +85,8 @@ const Home = () => {
                         ideaName={idea.name}
                         ideaBrand={idea.brand}
                         ideaLink={idea.lien}
-                        //onClick={() => handleDelete(idea.id)}
-                        onClick={() => deleteIdea(idea.id)}
+                        onClick={() => handleDelete(idea.id)}
+                        //onClick={() => deleteIdea(idea.id)}
                         //onClick={() => console.log(idea.id)}
                         />
                 )}

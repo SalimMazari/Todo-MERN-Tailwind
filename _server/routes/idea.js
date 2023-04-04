@@ -12,9 +12,9 @@ router.get("/ideas", async(request, response) => {
   try {
       let idea = await Idea.find().lean();
       response.status(200).json(idea);
-    } catch (error) {
-      response.status(400).json("Failed to load the ideas : ", error.response);
-    }
+  } catch (error) {
+    response.status(400).json("Failed to load the ideas : ", error.response);
+  }
 });
 
 // //Route de type GET pour AFFICHER UNE idée
@@ -48,7 +48,9 @@ router.post("/ideas", async(request, response) => {
         response.status(201).json("Idea created !");
     } catch (error) {
         //si ça ne fonctionne pas, afficher l'erreur :
-        response.status(400).json(error);
+        response.status(400);
+        response.json("Could not create idea : ", error);
+        response.end();
     }
 });
 
