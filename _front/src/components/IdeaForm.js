@@ -45,6 +45,7 @@ const IdeaForm = () => {
             status : data.status
         }, headers)
         .then((response) => {
+            console.log(response)
             console.log(response.data);
             if(response.data === "Idea created !") { 
                 // afficher la div de confirmation

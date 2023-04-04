@@ -7,6 +7,30 @@ const router = express.Router();
 //Récupérer le modèle IDEA
 const Idea = require("../models/Idea.js");
 
+//Route de type GET pour AFFICHER TOUTES les idées
+router.get("/ideas", async(request, response) => {
+  try {
+      let idea = await Idea.find().lean();
+      response.status(200).json(idea);
+    } catch (error) {
+      response.status(400).json("Failed to load the ideas : ", error.response);
+    }
+});
+
+// //Route de type GET pour AFFICHER UNE idée
+// router.get("/ideas/:id", async(request, response) => {
+//   try {
+//       let idea = await Idea.findOne({ _id: request.params.id }).lean();
+//       response.status(200);
+//       response.json(idea);
+//       response.end();
+//     } catch (error) {
+//       response.status(400);
+//       response.json("Failed to load the idea : ", error.response);
+//       response.end();
+//     }
+// });
+
 //Route de type POST pour ENVOYER les données de la nouvelle idée dans la BDD
 router.post("/ideas", async(request, response) => {
     try {
@@ -16,28 +40,20 @@ router.post("/ideas", async(request, response) => {
           name: name,
           brand: brand,
           lien: lien,
-          status: status,
-        //     name: request.body.name,
-        //     brand: request.body.brand,
-        //     lien: request.body.lien,
-        //     status: request.body.status,
+          status: status
         });
         //On sauvegarde la nouvelle idée dans la BDD
         await newIdea.save();
+        //ce que le serveur renvoie :
         response.status(201).json("Idea created !");
-        // // ce que le serveur renvoie :
-        // response.status(201).json({
-        //     _id: newIdea._id,
-        //     name: newIdea.name,
-        //     brand: newIdea.brand,
-        //     lien: newIdea.lien,
-        //     // status: newIdea.status,
-        // });
     } catch (error) {
-        //si ça ne fonctionne pas, afficher l'erreur:
+        //si ça ne fonctionne pas, afficher l'erreur :
         response.status(400).json(error);
     }
 });
+
+
+/*
 
 //Route de type DELETE pour SUPPRIMER une idée de la BDD
 router.delete("/ideas/:id", async(request, response) => {
@@ -93,32 +109,6 @@ router.patch("/ideas/:id", async(request, response) => {
       }
 });
 
-//Route de type GET pour AFFICHER TOUTES les idées
-router.get("/ideas", async(request, response) => {
-    try {
-        let idea = await Idea.find().lean();
-        response.status(200);
-        response.json(idea);
-        response.end();
-      } catch (error) {
-        response.status(400);
-        response.json("Failed to load the ideas : ", error.response);
-        response.end();
-      }
-});
-
-//Route de type GET pour AFFICHER UNE idée
-router.get("/ideas/:id", async(request, response) => {
-    try {
-        let idea = await Idea.findOne({ _id: request.params.id }).lean();
-        response.status(200);
-        response.json(idea);
-        response.end();
-      } catch (error) {
-        response.status(400);
-        response.json("Failed to load the idea : ", error.response);
-        response.end();
-      }
-});
+*/
 
 module.exports = router;
