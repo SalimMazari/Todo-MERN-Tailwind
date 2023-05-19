@@ -8,10 +8,10 @@ const router = express.Router();
 const Idea = require("../models/Idea.js");
 
 //Route de type GET pour AFFICHER TOUTES les idées
-router.get("/ideas", async(request, response) => {
+router.get("/ideas", async (request, response) => {
   try {
-      let idea = await Idea.find().lean();
-      response.status(200).json(idea);
+    let idea = await Idea.find().lean();
+    response.status(200).json(idea);
   } catch (error) {
     response.status(400).json("Failed to load the ideas : ", error.response);
   }
@@ -32,26 +32,27 @@ router.get("/ideas", async(request, response) => {
 // });
 
 //Route de type POST pour ENVOYER les données de la nouvelle idée dans la BDD
-router.post("/ideas", async(request, response) => {
-    try {
-        //destructuring:
-        const { name, brand, lien, status } = req.body;
-        const newIdea = new Idea({
-          name: name,
-          brand: brand,
-          lien: lien,
-          status: status
-        });
-        //On sauvegarde la nouvelle idée dans la BDD
-        await newIdea.save();
-        //ce que le serveur renvoie :
-        response.status(201).json("Idea created !");
-    } catch (error) {
-        //si ça ne fonctionne pas, afficher l'erreur :
-        response.status(400).json(error);
-    }
+router.post("/ideas", async (request, response) => {
+  try {
+    //destructuring:
+    const { name, brand, lien } = request.body;
+    const newIdea = new Idea({
+      name: name,
+      brand: brand,
+      lien: lien,
+    });
+    //On sauvegarde la nouvelle idée dans la BDD
+    await newIdea.save();
+    //ce que le serveur renvoie :
+    response.status(201).json("Idea created !");
+  } catch (error) {
+    //si ça ne fonctionne pas, afficher l'erreur :
+    response.status(400).json("Could not create idea : ", error);
+    //quand je mets "response.status(400).json("Could not create idea : ", error);"
+    //j'ai une erreur 500
+    //sinon, erreur 400
+  }
 });
-
 
 /*
 
