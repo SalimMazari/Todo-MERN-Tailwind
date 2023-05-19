@@ -2,20 +2,10 @@ const express = require("express");
 
 //Créer un serveur
 const app = express();
-//const Idea = require('./models/Idea.js')
-const port = 5000
+const port = 5000;
 
-//Connexion à la base de données locale grâce au package Mongoose
-const mongoose = require("mongoose");
-mongoose
-  .set("strictQuery", false)
-  .connect(
-    "mongodb+srv://mlepineutter:bbZkbqchFqBNn2tp@gifts.igy4rhz.mongodb.net/test"
-  )
-  .then(() => {
-    //si connecté
-    console.log("Connection with MongoDB was successful");
-  });
+//Middleware = plugin ajouté au serveur pour récupérer des paramètres de type Body
+app.use(express.json());
 
 //CORS (Cross-Origin Resource Sharing) fournit un mécanisme permettant au serveur backend et à un client frontend
 //de communiquer et de transmettre des données via les points de terminaison de l’API
@@ -36,8 +26,17 @@ app.use((req, res, next) => {
 });
 app.use(cors());
 
-//Middleware = plugin ajouté au serveur pour récupérer des paramètres de type Body
-app.use(express.json());
+//Connexion à la base de données locale grâce au package Mongoose
+const mongoose = require("mongoose");
+mongoose
+  .set("strictQuery", false)
+  .connect(
+    "mongodb+srv://mlepineutter:bbZkbqchFqBNn2tp@gifts.igy4rhz.mongodb.net/test"
+  )
+  .then(() => {
+    //si connecté
+    console.log("Connection with MongoDB was successful");
+  });
 
 //Appeler les routes
 const routes = require("./routes/idea.js");
