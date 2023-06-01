@@ -58,9 +58,9 @@ router.post("/ideas", async (request, response) => {
 router.delete("/ideas/:id", async (request, response) => {
   try {
     //si l'id de l'idée a bien été transmis:
-    if (request.body.id) {
+    if (request.body._id) {
       //on cherche l'idée à partir de son id dans la BDD et on la supprime:
-      await Idea.findByIdAndDelete(request.body.id);
+      await Idea.findByIdAndDelete({ _id: request.body.id }).lean();
       response.status(201);
       response.json("Idea deleted !");
       response.end();
