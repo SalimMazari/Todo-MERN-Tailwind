@@ -54,30 +54,28 @@ router.post("/ideas", async (request, response) => {
   }
 });
 
-/*
-
 //Route de type DELETE pour SUPPRIMER une idée de la BDD
-router.delete("/ideas/:id", async(request, response) => {
-    try {
-        //si l'id de l'idée a bien été transmis:
-        if (request.body.id) {
-          //on cherche l'idée à partir de son id dans la BDD et on la supprime:
-          await Idea.findByIdAndDelete(request.body.id);
-          response.status(201);
-          response.json("Idea deleted !");
-          response.end();
-        //sinon, si aucun id n'a été transmis:
-        } else {
-          response.status(400);
-          response.json("Missing id");
-          response.end();
-        }
-      } catch (error) {
-        response.status(400);
-        response.json("Could not delete idea : ", error.response);
-        response.end();
-      }
+router.delete("/ideas/:id", async (request, response) => {
+  try {
+    //si l'id de l'idée a bien été transmis:
+    if (request.body.id) {
+      //on cherche l'idée à partir de son id dans la BDD et on la supprime:
+      await Idea.findByIdAndDelete(request.body.id);
+      response.status(201);
+      response.json("Idea deleted !");
+      response.end();
+      //sinon, si aucun id n'a été transmis:
+    } else {
+      response.status(400);
+      response.json("Missing id");
+      response.end();
+    }
+  } catch (error) {
+    response.status(400).json("Could not delete idea : ", error.response);
+  }
 });
+
+/*
 
 //Route de type PATCH pour MODIFIER une idée de la BDD
 router.patch("/ideas/:id", async(request, response) => {
